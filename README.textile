@@ -1,17 +1,15 @@
 Para cargar la base de datos "employees" en MongoDB habra que ejecutar los siguientes comandos:
 
-<pre><code>
-$ git clone git@github.com:Ciges/MongoDB_Sample_Databases
+<pre><code>$ git clone git@github.com:Ciges/MongoDB_Sample_Databases
 $ cd MongoDB_Sample_Databases/mongodb
 $ cd dump
 $ tar -xjvf employees.tar.bz2
 $ mongorestore employees
 </code></pre>
 
-Una vez hecho esto deberiamos tener una base de datos "employees" con dos colecciones "departments" y "employees" de 9 y 300.024 elementos respectivamente
+Una vez hecho esto deberiamos tener una base de datos *"employees"* con dos colecciones *"departments"* y *"employees"* de 9 y 300.024 elementos respectivamente
 
-<pre><code>
-$ mongo
+<pre><code>$ mongo
 MongoDB shell version: 2.4.8
 connecting to: test
 > use employees

@@ -2,13 +2,9 @@ Para cargar la base de datos "employees" en MongoDB habra que ejecutar los sigui
 
 <code>
 $ git clone git@github.com:Ciges/MongoDB_Sample_Databases
-
 $ cd MongoDB_Sample_Databases/mongodb
-
 $ cd dump
-
 $ tar -xjvf employees.tar.bz2
-
 $ mongorestore employees
 </code>
 

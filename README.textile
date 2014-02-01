@@ -1,16 +1,16 @@
 Para cargar la base de datos "employees" en MongoDB habra que ejecutar los siguientes comandos:
 
-<code>
+<pre><code>
 $ git clone git@github.com:Ciges/MongoDB_Sample_Databases
 $ cd MongoDB_Sample_Databases/mongodb
 $ cd dump
 $ tar -xjvf employees.tar.bz2
 $ mongorestore employees
-</code>
+</code></pre>
 
 Una vez hecho esto deberiamos tener una base de datos "employees" con dos colecciones "departments" y "employees" de 9 y 300.024 elementos respectivamente
 
-<code>
+<pre><code>
 $ mongo
 MongoDB shell version: 2.4.8
 connecting to: test
@@ -24,6 +24,6 @@ system.indexes
 300024
 > db.departments.count()
 9
-</code>
+</code></pre>
 
 Una descripción de la base de datos "employees" (tablas y campos) y de los criterios seguidos para migrarla a MongoDB desde MySQL se puede encontrar en "esta nota de Evernote":https://www.evernote.com/shard/s19/sh/b9315e6e-993d-4d16-8c75-a4ff804b2d1f/a87446cea9f973a458f318fc04791076

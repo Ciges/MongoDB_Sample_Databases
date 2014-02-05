@@ -1,8 +1,8 @@
 En este repositorio están los scripts de migración y el resultado de migrar las siguientes bases de datos de ejemplo de MysQL a MongoDB:
-* employees
-* world
+* "*employees*":http://dev.mysql.com/doc/employee/en/index.html
+* "*world*":http://dev.mysql.com/doc/world-setup/en/index.html
 
-Para cargar las bases de datos en MongoDB usamos el comando *mongoresstore. Por ejemplo, para cargar la base de datos "employees" en MongoDB habra que ejecutar los siguientes comandos:
+Para cargar las bases de datos en MongoDB usamos el comando *mongoresstore*. Por ejemplo, para cargar la base de datos "employees" en MongoDB habra que ejecutar los siguientes comandos:
 
 <pre><code>$ git clone git@github.com:Ciges/MongoDB_Sample_Databases
 $ cd MongoDB_Sample_Databases/mongodb

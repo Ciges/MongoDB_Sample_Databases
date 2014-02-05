@@ -57,95 +57,99 @@ for employee in mysql_cur:
     # Para cada empleado recorremos el histórico de salarios
     salaries = mysql_con.cursor()
     salaries.execute("select * from salaries where emp_no = " + str(employee_doc['_id']))
-    for salary in salaries:
+    if salaries.rowcount >= 1:
         employee_doc['salaries_history'] = []
-        # Si el año de la fecha actual es 9999 entonces es el salario actual
-        if salary[3].year == 9999:
-            employee_doc['salary'] = salary[1]
-            employee_doc['salaries_history'].append({
-                'salary': salary[1],
-                'from_date': get_datetime(salary[2]),
-                })
-        else:
-             employee_doc['salaries_history'].append({
-                'salary': salary[1],
-                'from_date': get_datetime(salary[2]),
-                'to_date': get_datetime(salary[3])
-                })
-            
+        for salary in salaries:
+            # Si el año de la fecha actual es 9999 entonces es el salario actual
+            if salary[3].year == 9999:
+                employee_doc['salary'] = salary[1]
+                employee_doc['salaries_history'].append({
+                    'salary': salary[1],
+                    'from_date': get_datetime(salary[2]),
+                    })
+            else:
+                 employee_doc['salaries_history'].append({
+                    'salary': salary[1],
+                    'from_date': get_datetime(salary[2]),
+                    'to_date': get_datetime(salary[3])
+                    })
+                
         
     # Para cada empleado recorremos el histórico de cargos
     titles = mysql_con.cursor()
     titles.execute("select * from titles where emp_no = " + str(employee_doc['_id']))
-    for title in titles:
+    if titles.rowcount >= 1:
         employee_doc['title'] = []
         employee_doc['titles_history'] = []
-        # Si el año de la fecha actual es 9999 entonces es el cargo actual. ¡Puede tener más de un cargo!
-        if title[3].year == 9999:
-            employee_doc['title'].append(title[1])
-            employee_doc['titles_history'].append({
-                'title': title[1],
-                'from_date': get_datetime(title[2]),
-                })
-        else:
-            employee_doc['titles_history'].append({
-                'title': title[1],
-                'from_date': get_datetime(title[2]),
-                'to_date': get_datetime(title[3])
-                })
-         
+        for title in titles:
+            # Si el año de la fecha actual es 9999 entonces es el cargo actual. ¡Puede tener más de un cargo!
+            if title[3].year == 9999:
+                employee_doc['title'].append(title[1])
+                employee_doc['titles_history'].append({
+                    'title': title[1],
+                    'from_date': get_datetime(title[2]),
+                    })
+            else:
+                employee_doc['titles_history'].append({
+                    'title': title[1],
+                    'from_date': get_datetime(title[2]),
+                    'to_date': get_datetime(title[3])
+                    })
+             
     # Para cada empleado recorremos el histórico de sus departamentos
     depts_emp = mysql_con.cursor()
     depts_emp.execute("select * from dept_emp where emp_no = " + str(employee_doc['_id']))
-    for dept_emp in depts_emp:
+    if depts_emp.rowcount >= 1:
         employee_doc['department'] = []
         employee_doc['departments_history'] = []
-        # Almacenamos el nombre del departamento, no el número
-        department_name = get_departmentName(dept_emp[1])
-        # Si el año de la fecha actual es 9999 entonces es el departamento actual. ¡Puede pertenecer a más de un departamento!
-        if dept_emp[3].year == 9999:
-            employee_doc['department'].append(department_name)
-            employee_doc['departments_history'].append({
-                'department': department_name,
-                'from_date': get_datetime(dept_emp[2]),
-                })
-            # Actualizamos el número de empleados para el departamento correspondiente
-            departments_col.update({"_id": dept_emp[1]}, { "$inc" : { "number_employees" : 1 } })
-        else:
-            employee_doc['departments_history'].append({
-                'department': department_name,
-                'from_date': get_datetime(dept_emp[2]),
-                'to_date': get_datetime(dept_emp[3])
-                })
- 
+        for dept_emp in depts_emp:
+            # Almacenamos el nombre del departamento, no el número
+            department_name = get_departmentName(dept_emp[1])
+            # Si el año de la fecha actual es 9999 entonces es el departamento actual. ¡Puede pertenecer a más de un departamento!
+            if dept_emp[3].year == 9999:
+                employee_doc['department'].append(department_name)
+                employee_doc['departments_history'].append({
+                    'department': department_name,
+                    'from_date': get_datetime(dept_emp[2]),
+                    })
+                # Actualizamos el número de empleados para el departamento correspondiente
+                departments_col.update({"_id": dept_emp[1]}, { "$inc" : { "number_employees" : 1 } })
+            else:
+                employee_doc['departments_history'].append({
+                    'department': department_name,
+                    'from_date': get_datetime(dept_emp[2]),
+                    'to_date': get_datetime(dept_emp[3])
+                    })
+     
     # Para cada empleado recorremos el histórico de los departamentos de los que ha sido jefe
     depts_manager = mysql_con.cursor()
     depts_manager.execute("select * from dept_manager where emp_no = " + str(employee_doc['_id']))
-    for dept_manager in depts_manager:
+    if depts_manager.rowcount >= 1:
         employee_doc['manager'] = []
         employee_doc['managers_history'] = []
-        # Almacenamos el nombre del departamento, no el número
-        department_name = get_departmentName(dept_manager[0])
-        # Si el año de la fecha actual es 9999 entonces es el departamento actual. ¡Puede pertenecer a más de un departamento!
-        if dept_manager[3].year == 9999:
-            employee_doc['manager'].append(department_name)
-            employee_doc['managers_history'].append({
-                'department': department_name,
-                'from_date': get_datetime(dept_manager[2]),
-                })
-            # Añadimos la información del jefe al departamento
-            departments_col.update({"_id": dept_manager[1]}, { "$set" : { "manager" : {
-                'emp_no': employee_doc['_id'],
-                'first_name': employee_doc['first_name'],
-                'last_name': employee_doc['last_name'],
-                }           
-            } })
-        else:
-             employee_doc['managers_history'].append({
-                'department': department_name,
-                'from_date': get_datetime(dept_manager[2]),
-                'to_date': get_datetime(dept_manager[3])
-                })
+        for dept_manager in depts_manager:
+            # Almacenamos el nombre del departamento, no el número
+            department_name = get_departmentName(dept_manager[0])
+            # Si el año de la fecha actual es 9999 entonces es el departamento actual. ¡Puede pertenecer a más de un departamento!
+            if dept_manager[3].year == 9999:
+                employee_doc['manager'].append(department_name)
+                employee_doc['managers_history'].append({
+                    'department': department_name,
+                    'from_date': get_datetime(dept_manager[2]),
+                    })
+                # Añadimos la información del jefe al departamento
+                departments_col.update({"_id": dept_manager[1]}, { "$set" : { "manager" : {
+                    'emp_no': employee_doc['_id'],
+                    'first_name': employee_doc['first_name'],
+                    'last_name': employee_doc['last_name'],
+                    }           
+                } })
+            else:
+                 employee_doc['managers_history'].append({
+                    'department': department_name,
+                    'from_date': get_datetime(dept_manager[2]),
+                    'to_date': get_datetime(dept_manager[3])
+                    })
 
     # Añadimos el documento a la colección de empleados
     employees_col.save(employee_doc)

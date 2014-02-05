@@ -4,7 +4,7 @@ En este repositorio están los scripts de migración y el resultado de migrar la
 
 Estas bases de datos se han obtenido de la "documentación de MySQL":http://dev.mysql.com/doc/index-other.html. En "este artículo":http://www.ntu.edu.sg/home/ehchua/programming/sql/SampleDatabases.html de Chua Hock-Chuan están documentadas.
 
-Para cargar las bases de datos en MongoDB usamos el comando *mongoresstore*. Por ejemplo, para cargar la base de datos "employees" en MongoDB habra que ejecutar los siguientes comandos:
+Para cargar las bases de datos en MongoDB usamos el comando *mongorestore*. Por ejemplo, para cargar la base de datos "employees" en MongoDB habra que ejecutar los siguientes comandos:
 
 <pre><code>$ git clone git@github.com:Ciges/MongoDB_Sample_Databases
 $ cd MongoDB_Sample_Databases/mongodb

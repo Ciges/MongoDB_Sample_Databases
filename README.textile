@@ -1,5 +1,6 @@
 En este repositorio están los scripts de migración y el resultado de migrar las siguientes bases de datos de ejemplo de MysQL a MongoDB:
 * "*employees*":http://dev.mysql.com/doc/employee/en/index.html
+* "*sakila*":http://dev.mysql.com/doc/sakila/en/index.html
 * "*world*":http://dev.mysql.com/doc/world-setup/en/index.html
 
 Estas bases de datos se han obtenido de la "documentación de MySQL":http://dev.mysql.com/doc/index-other.html. En "este artículo":http://www.ntu.edu.sg/home/ehchua/programming/sql/SampleDatabases.html de Chua Hock-Chuan están documentadas.
@@ -14,5 +15,6 @@ $ mongorestore employees
 
 Una descripción de cada base de datos (tablas y campos) y de los criterios seguidos para migrarlas se pueden encontrar en las siguientes notas compartidas:
 * "Descripción de *employees*":https://www.evernote.com/shard/s19/sh/b9315e6e-993d-4d16-8c75-a4ff804b2d1f/a87446cea9f973a458f318fc04791076
+* "Descripcion de *sakila*":https://www.evernote.com/shard/s19/sh/111885b6-eef0-4ee1-b7ca-ce2cb150884f/7e0cfd765653aa0dfbc0fd45f0c468eb
 * "Descripción de *world*":https://www.evernote.com/shard/s19/sh/545c4488-fbaf-4f8b-a8ad-fe51732a442d/ea356f26fc7436af565cc6c73fa442b1
 

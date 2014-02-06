@@ -70,3 +70,66 @@ for film in films:
 # Añadimos índices en los arrays de actores y categorías
 films_col.ensure_index('actors')
 films_col.ensure_index('categories')
+
+# Obtenemos la información de los clientes
+# ---------------------------------------------
+customers = mysql_con.cursor()
+customers.execute("select customer_id, first_name, last_name, email, address_id, active from customer")
+customers_col = mongodb_db.customers
+for customer in customers:
+    # Creamos un documento para cada cliente, poniendo la información relativa a su dirección como subdocumentos
+    customer_doc = {
+        '_id': customer[0],
+        'first_name': customer[1],
+        'last_name': customer[2],
+        'email': customer[3]
+        }
+    address_cur = mysql_con.cursor()
+    address_cur.execute("select address, address2, district, postal_code, phone, city, country from address inner join city inner join country on address.city_id = city.city_id and city.country_id = country.country_id where address_id = " + str(customer[4]))
+    address = address_cur.fetchone()
+    customer_doc['address'] = {
+        'address': address[0],
+        'address2': address[1],
+        'district': address[2],
+        'postal_code': address[3],
+        'phone': address[4],
+        'city': address[5],
+        'country': address[6]
+        }
+    if customer[5] == 1:
+        customer_doc['active'] = True
+    else:
+        customer_doc['active'] = False
+
+    customers_col.insert(customer_doc)
+
+# Obtenemos la información de los DVD's (inventorio)
+# ---------------------------------------------
+inventory = mysql_con.cursor()
+inventory.execute("select inventory_id,film_id from inventory")
+inventory_col = mongodb_db.inventory
+for dvd in inventory:
+    # Creamos un documento para cada DVD del videoclub, incluyendo la información sobre las veces que ha sido alquilado
+    dvd_doc = {
+        '_id': dvd[0]
+        }
+    # Ponemos el título de la película
+    film_cur = mysql_con.cursor()
+    film_cur.execute("select title from film where film_id = " + str(dvd[1]))
+    film = film_cur.fetchone()
+    dvd_doc['title'] = film[0]
+    # Añadimos los alquileres
+    rentals = mysql_con.cursor()
+    rentals.execute("select rental_date,return_date,first_name,last_name,phone from rental inner join customer inner join address on rental.customer_id = customer.customer_id and customer.address_id = address.address_id where inventory_id = " + str(dvd[0]))
+    if rentals.rowcount >= 1:
+        dvd_doc['rentals'] = []
+        for rental in rentals:
+            dvd_doc['rentals'].append({
+                'rental_date': rental[0],
+                'return_date': rental[1],
+                'first_name': rental[2],
+                'last_name': rental[3],
+                'phone': rental[4]
+                })
+                
+    inventory_col.insert(dvd_doc)
